@@ -103,7 +103,7 @@ var displayCurrentWeather = (data, cityName) => {
     currentWeatherEl.appendChild(humidityEl);
 
     var windSpeedEl = document.createElement('p');
-    windSpeedEl.textContent = 'Wind Speed: ' + data.wind.speed + ' MPH';
+    windSpeedEl.textContent = 'Wind Speed: ' + data.wind.speed + ' MPS';
     currentWeatherEl.appendChild(windSpeedEl);
 }
 
