@@ -52,23 +52,23 @@ var getCurrentWeather = function(cityName) {
     fetch(apiURL)
     .then(response => response.json())
     .then(data => {
-        displayCurrentWeather(data, cityName);  // call function to display current day/time and weather conditions
-        return data.coord;                      // extract city coordinates object and pass it on to additional functions below
+        displayCurrentWeather(data, cityName);
+        return data.coord; 
     })
     .then(coord => {
-        getUVindex(coord.lat, coord.lon);       // call function to fetch UV index based on city coordinates
-        get5dayForecast(coord.lat, coord.lon);  // call function to fetch 5-day forecast based on city coordinates
+        getUVindex(coord.lat, coord.lon); 
+        get5dayForecast(coord.lat, coord.lon); 
     })
-    .catch(error => {                           // error handling - if fetch is not successful we don't want the input entered to remain in the search history
-        alert('Something went wrong... Please check for any misspelling. There could also be a problem with the connection, or there is no weather data available for this city.');
+    .catch(error => {
+        alert('Please check your entry');
         forecastEl.innerHTML = '';
-        if (cities.includes(cityName)) {        // unsuccessful search was stored in cities array, then remove it
+        if (cities.includes(cityName)) {
             var index = cities.indexOf(cityName);
             if (index > -1) {
                 cities.splice(index, 1);
             }
-            localStorage.setItem('cityResult', JSON.stringify(cities)); // save updated array 
-            searchHistory();                                                // display updated search history
+            localStorage.setItem('cityResult', JSON.stringify(cities));
+            searchHistory();
         }
     });
 };
@@ -89,7 +89,7 @@ var displayCurrentWeather = (data, cityName) => {
         return;
     }
 
-    dtCitySearched = moment.unix(data.dt + data.timezone).utc().format('M/DD/YY, h:mm a');
+    dtCitySearched = moment.unix(data.dt + data.timezone).utc().format('M/DD/YYYY, h:mm a');
 
     var iconId = data.weather[0].icon;
     cityResultEl.innerHTML = `${cityName} (${dtCitySearched}) <span id="weather-icon"><img src="https://openweathermap.org/img/wn/${iconId}@2x.png"/></span>`;
@@ -115,7 +115,7 @@ var getUVindex = (lat, lon) => {
         var index = parseFloat(data.value);
         displayUVindex(index);
     })
-    .catch(error => alert('Error fetching the UV index'));
+    .catch(error => alert('UV index error'));
 }
 
 var displayUVindex = index => {
@@ -140,22 +140,22 @@ var get5dayForecast = (lat, lon) => {
     fetch(apiURL)
     .then(response => response.json())
     .then(data => display5dayForecast(data))
-    .catch(error => alert('Error fetching the 5-day forecast for this city'));
+    .catch(error => alert('5-day forecast error'));
 };
 
 
 var display5dayForecast = data => {
-    forecastEl.innerHTML = '<h4 class="d-block pt-4 pb-2">5-Day Forecast <span id="time-forecast">[expected weather conditions at noon each day]</span></h4>';
+    forecastEl.innerHTML = '<h4 class="d-block pt-4 pb-2">5-Day Forecast <span id="time-forecast"></span></h4>';
     var cardsContainerEl = document.createElement('div');
     cardsContainerEl.setAttribute('class', 'row');
 
     var firstForecast;
-    var todayStartOfHour = moment(dtCitySearched, 'M/DD/YY, h:mm a').startOf('hour').format('YYYY-MM-DD HH:mm:ss');
-    var todaySixAM = moment(dtCitySearched, 'M/DD/YY, h:mm a').format('YYYY-MM-DD') + ' 06:00:00';
+    var todayStartOfHour = moment(dtCitySearched, 'M/DD/YYYY, h:mm a').startOf('hour').format('YYYY-MM-DD HH:mm:ss');
+    var todaySixAM = moment(dtCitySearched, 'M/DD/YYYY, h:mm a').format('YYYY-MM-DD') + ' 06:00:00';
     if (todayStartOfHour > todaySixAM) {  
-        firstForecast = moment(dtCitySearched, 'M/DD/YY, h:mm a').add(1, 'd').format('YYYY-MM-DD') + ' 12:00:00';
+        firstForecast = moment(dtCitySearched, 'M/DD/YYYY, h:mm a').add(1, 'd').format('YYYY-MM-DD') + ' 12:00:00';
     } else { 
-        firstForecast = moment(dtCitySearched, 'M/DD/YY, h:mm a').format('YYYY-MM-DD') + ' 12:00:00';
+        firstForecast = moment(dtCitySearched, 'M/DD/YYYY, h:mm a').format('YYYY-MM-DD') + ' 12:00:00';
     }
 
     var arrDays = data.list;
@@ -176,7 +176,7 @@ var display5dayForecast = data => {
         var cardBodyEl = document.createElement('div');
         cardBodyEl.setAttribute('class', 'card-body');
 
-        var date = moment(arrDays[i].dt_txt.split(' ')[0], 'YYYY-MM-DD').format('M/DD/YY');
+        var date = moment(arrDays[i].dt_txt.split(' ')[0], 'YYYY-MM-DD').format('M/DD/YYYY');
         var dateEl = document.createElement('label');
         dateEl.setAttribute('class', 'cityResult');
         dateEl.textContent = `${date}`;
