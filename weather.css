@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Nanum Gothic", sans-serif;
+    background-color: rgb(198, 232, 243);
+    background-size: cover;
+    min-height: 100vh;
+}
+
+header {
+    background-color: rgb(32, 51, 77);
+    color: rgb(202, 202, 202);
+    height: 15%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.row {
+    margin: 10px;
+}
+
+.searchLabel {
+    font-size: 15pt;
+}
+
+.userCityList {
+    margin-top: 15px;
+}
+
+h3 {
+    font-size: 14pt;
+    padding: 10px 0px;
+}
+
+.userCityList:hover {
+    color: rgb(58, 57, 57);
+    background:rgb(202, 202, 202);
+    cursor: pointer;
+}
+
+
